@@ -20,7 +20,7 @@ jobs:
       - name: Sync README from ./docs/docker/docker.md
         uses: meeDamian/sync-readme@v1.0.6
         with:
+          readme: ./docs/docker/docker.md
+          slug: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}
           user: ${{ secrets.DOCKERHUB_USERNAME }}
           pass: ${{ secrets.DOCKERHUB_PASSWORD }}
-          readme: ./docs/docker/docker.md
-          slug: jfandy1982/find-duplicates
