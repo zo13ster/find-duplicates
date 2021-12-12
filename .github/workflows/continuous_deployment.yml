@@ -1,0 +1,63 @@
+name: Deployment Pipeline
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+    - '**.md'
+    - '**.*ignore'
+    - 'docs/**'
+    - '.github/workflows/retention_period.yml'
+    - '.github/workflows/update_dockerhub_description.yml'
+    - '.github/dependabot.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        # Enable futher node.js versions
+        # - as long as no release is published, only the most current is used
+        node-version: [ 14.x ]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-${{ matrix.node-version }}
+        path: dist
+        retention-days: 7
+
+  deploy:
+    name: DockerHub Deployment
+
+    needs: build
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        # Enable futher node.js versions
+        # - as long as no release is published, only the most current is used
+        node-version: [ 14.x ]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: build-${{ matrix.node-version }}
+          path: dist
+
+      - name: Publish to Registry
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: jfandy1982/find-duplicates
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
