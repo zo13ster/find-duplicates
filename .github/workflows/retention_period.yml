@@ -1,5 +1,8 @@
 name: Garbage Collection
 
+env:
+  RETAIN_DAYS: 30
+
 on:
   schedule:
 # Run monthly, at 23:42 UTC on the 1st day of month.
@@ -10,7 +13,7 @@ on:
       days:
         description: 'Retention Period (in days)'
         required: true
-        default: '30'
+        default: ${{ env.RETAIN_DAYS }}
 
 jobs:
   del_runs:
@@ -20,5 +23,5 @@ jobs:
         uses: Mattraks/delete-workflow-runs@main
         with:
           repository: ${{ github.repository }}
-          retain_days: ${{ github.event.inputs.days }}
+          retain_days: ${{ github.event.inputs.days || env.RETAIN_DAYS }}
           keep_minimum_runs: 5
