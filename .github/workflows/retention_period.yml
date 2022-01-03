@@ -1,10 +1,6 @@
 name: Garbage Collection
 
 on:
-  schedule:
-# Run monthly, at 23:42 UTC on the 1st day of month.
-    - cron: '42 23 1 * *'
-
   workflow_dispatch:
     inputs:
       days:
