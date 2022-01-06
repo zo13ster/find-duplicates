@@ -66,4 +66,6 @@ mv "${RESULT_FILE_TMP}" "${RESULT_FILE}"
 sed 's;findup_data05;volume1/photo;g' "${RESULT_FILE}" >"${RESULT_FILE_TMP}"
 mv "${RESULT_FILE_TMP}" "${RESULT_FILE}"
 
+echo "Logged results in file: ${RESULT_FILE}"
+
 exit 0
