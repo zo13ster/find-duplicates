@@ -10,7 +10,6 @@ Search for file duplicates using FDupes tool wrapped in a Docker container
 
 To search for duplicates in the current path without deleting anything automatically execute:
 
-´´´bash
+```bash
 # docker run --rm -v "$(pwd):/findup_data01:ro" -v $HOME/findup_result:/findup_result jfandy1982/find-duplicates:latest
-
-´´´
+```
